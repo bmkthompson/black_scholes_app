@@ -37,11 +37,11 @@ with st.container():
     col1, col2 = st.columns([2, 1])  
 
     with col1:
-        S = st.number_input("Stock Price (S)", value=100.0, step=0.10)
-        K = st.number_input("Strike Price (K)", value=100.0, step=0.10)
-        T = st.number_input("Time to Expiry (T in years)", value=1.0, step=0.10)
-        r = st.number_input("Risk-Free Rate (r as a decimal)", value=0.05, step=0.01)
-        sigma = st.number_input("Volatility (σ as a decimal)", value=0.2, step=0.01)
+        S = st.number_input("Stock Price", value=100.0, step=0.10)
+        K = st.number_input("Strike Price", value=100.0, step=0.10)
+        T = st.number_input("Time to Expiry (Years)", value=1.0, step=0.10)
+        r = st.number_input("Risk-Free Rate", value=0.05, step=0.01)
+        sigma = st.number_input("Volatility", value=0.2, step=0.01)
 
     with col2:
         if S > 0 and K > 0 and T > 0 and r >= 0 and sigma >= 0:
@@ -87,12 +87,12 @@ with st.container():
             delta_call, delta_put, gamma, theta_call, theta_put, vega = calculate_greeks(S, K, T, r, sigma)
 
             greeks = {
-                "Delta (Call)": delta_call,
-                "Delta (Put)": delta_put,
-                "Gamma": gamma,
-                "Theta (Call)": theta_call,
-                "Theta (Put)": theta_put,
-                "Vega": vega
+                "Δ (Call)": delta_call,
+                "Δ (Put)": delta_put,
+                "Θ (Call)": theta_call,
+                "Θ (Put)": theta_put,
+                "Γ": gamma,
+                "V": vega
             }
             colors = ["blue", "orange", "green", "red", "purple", "cyan"]
 
@@ -111,7 +111,7 @@ with st.container():
                     y=list(greeks.keys())[index],
                     text=f"{value:.2f}",
                     showarrow=False,
-                    font=dict(size=12) 
+                    font=dict(size=14) 
                 )
 
             fig.update_layout(
@@ -135,7 +135,7 @@ fig = go.Figure(data=go.Heatmap(
     x=stock_prices,
     y=["Call", "Put"], 
     text=heatmap_data.round(2), 
-    texttemplate="%{text}$",  
+    texttemplate="%{text}",  
     colorscale=[
         [0, "red"], 
         [1, "green"]
@@ -146,7 +146,7 @@ fig = go.Figure(data=go.Heatmap(
     hoverongaps=False,  
     xgap=1,  
     ygap=1,  
-    hovertemplate="<b>P&L: %{z:.2f}$</b><br>Stock Price: %{x:.2f}$<extra></extra>",
+    hovertemplate="<b>P&L: %{z:.2f}</b><br>Stock Price: %{x:.2f}<extra></extra>",
     textfont=dict(size=10)
 ))
 
@@ -158,7 +158,7 @@ fig.add_shape(type="line",
 
 fig.add_annotation(
     x=S, y=1,  
-    text="Current Stock Price",
+    text=f"S: {S:.2f}",
     showarrow=True,
     arrowhead=2,
     ax=0,
@@ -167,7 +167,7 @@ fig.add_annotation(
 )
 
 fig.update_layout(
-    title="Profit and Loss Heatmap",
+    title="Profit and Loss ($)",
     height=400,  
     width=1200,  
     font=dict(size=12)
